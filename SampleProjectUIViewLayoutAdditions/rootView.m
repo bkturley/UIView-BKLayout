@@ -26,11 +26,19 @@
         self.instructionLabel.textColor = [UIColor brownColor];        [self addSubview:self.instructionLabel];
         
         self.closeAppButton = [[UIButton alloc] initWithFrame:CGRectMake(100, 100, 50, 50)];
+        [self.closeAppButton addTarget:self action:@selector(closeAppButtonTapped) forControlEvents:UIControlEventTouchUpInside];
         [self addSubview:self.closeAppButton];
     }
     return self;
 }
 
+- (void) closeAppButtonTapped{
+    if ([self.closeAppButton.backgroundColor isEqual:[UIColor clearColor]]){
+        self.closeAppButton.backgroundColor = [UIColor brownColor];
+    }else{
+        self.closeAppButton.backgroundColor = [UIColor clearColor];
+    }
+}
 
 #pragma mark helpers
 
