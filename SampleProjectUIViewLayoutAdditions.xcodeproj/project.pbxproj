@@ -19,13 +19,13 @@
 		C046373A170471320035F658 /* rootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C0463739170471320035F658 /* rootViewController.m */; };
 		C046373D170472660035F658 /* rootView.m in Sources */ = {isa = PBXBuildFile; fileRef = C046373C170472660035F658 /* rootView.m */; };
 		C0463743170478650035F658 /* JRSwizzle.m in Sources */ = {isa = PBXBuildFile; fileRef = C0463740170478650035F658 /* JRSwizzle.m */; };
-		C0463744170478650035F658 /* UIView+swizzle.m in Sources */ = {isa = PBXBuildFile; fileRef = C0463742170478650035F658 /* UIView+swizzle.m */; };
+		C0463744170478650035F658 /* UIView+BKLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = C0463742170478650035F658 /* UIView+BKLayout.m */; };
 		C046374717047C730035F658 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = C0463727170470A00035F658 /* main.m */; };
 		C046374817047C730035F658 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = C046372B170470A00035F658 /* AppDelegate.m */; };
 		C046374917047C730035F658 /* rootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C0463739170471320035F658 /* rootViewController.m */; };
 		C046374A17047C730035F658 /* rootView.m in Sources */ = {isa = PBXBuildFile; fileRef = C046373C170472660035F658 /* rootView.m */; };
 		C046374B17047C730035F658 /* JRSwizzle.m in Sources */ = {isa = PBXBuildFile; fileRef = C0463740170478650035F658 /* JRSwizzle.m */; };
-		C046374C17047C730035F658 /* UIView+swizzle.m in Sources */ = {isa = PBXBuildFile; fileRef = C0463742170478650035F658 /* UIView+swizzle.m */; };
+		C046374C17047C730035F658 /* UIView+BKLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = C0463742170478650035F658 /* UIView+BKLayout.m */; };
 		C046374E17047C730035F658 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C046371B170470A00035F658 /* UIKit.framework */; };
 		C046374F17047C730035F658 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C046371D170470A00035F658 /* Foundation.framework */; };
 		C046375017047C730035F658 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C046371F170470A00035F658 /* CoreGraphics.framework */; };
@@ -55,8 +55,8 @@
 		C046373C170472660035F658 /* rootView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = rootView.m; sourceTree = "<group>"; };
 		C046373F170478650035F658 /* JRSwizzle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JRSwizzle.h; sourceTree = "<group>"; };
 		C0463740170478650035F658 /* JRSwizzle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JRSwizzle.m; sourceTree = "<group>"; };
-		C0463741170478650035F658 /* UIView+swizzle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+swizzle.h"; sourceTree = "<group>"; };
-		C0463742170478650035F658 /* UIView+swizzle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+swizzle.m"; sourceTree = "<group>"; };
+		C0463741170478650035F658 /* UIView+BKLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+BKLayout.h"; sourceTree = "<group>"; };
+		C0463742170478650035F658 /* UIView+BKLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+BKLayout.m"; sourceTree = "<group>"; };
 		C046375917047C730035F658 /* SampleProjectUIViewLayoutAdditions copy.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "SampleProjectUIViewLayoutAdditions copy.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		C046375A17047C730035F658 /* SampleProjectUIViewLayoutAdditions copy-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "SampleProjectUIViewLayoutAdditions copy-Info.plist"; path = "/Users/bkturley/workspace/My Repos/SampleProjectUIViewLayoutAdditions/SampleProjectUIViewLayoutAdditions copy-Info.plist"; sourceTree = "<absolute>"; };
 /* End PBXFileReference section */
@@ -148,8 +148,8 @@
 			children = (
 				C046373F170478650035F658 /* JRSwizzle.h */,
 				C0463740170478650035F658 /* JRSwizzle.m */,
-				C0463741170478650035F658 /* UIView+swizzle.h */,
-				C0463742170478650035F658 /* UIView+swizzle.m */,
+				C0463741170478650035F658 /* UIView+BKLayout.h */,
+				C0463742170478650035F658 /* UIView+BKLayout.m */,
 			);
 			name = "Layout Additions";
 			sourceTree = "<group>";
@@ -253,7 +253,7 @@
 				C046373A170471320035F658 /* rootViewController.m in Sources */,
 				C046373D170472660035F658 /* rootView.m in Sources */,
 				C0463743170478650035F658 /* JRSwizzle.m in Sources */,
-				C0463744170478650035F658 /* UIView+swizzle.m in Sources */,
+				C0463744170478650035F658 /* UIView+BKLayout.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -266,7 +266,7 @@
 				C046374917047C730035F658 /* rootViewController.m in Sources */,
 				C046374A17047C730035F658 /* rootView.m in Sources */,
 				C046374B17047C730035F658 /* JRSwizzle.m in Sources */,
-				C046374C17047C730035F658 /* UIView+swizzle.m in Sources */,
+				C046374C17047C730035F658 /* UIView+BKLayout.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -418,6 +418,7 @@
 				C0463737170470A10035F658 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		C046375617047C730035F658 /* Build configuration list for PBXNativeTarget "Layout" */ = {
 			isa = XCConfigurationList;
@@ -426,6 +427,7 @@
 				C046375817047C730035F658 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
