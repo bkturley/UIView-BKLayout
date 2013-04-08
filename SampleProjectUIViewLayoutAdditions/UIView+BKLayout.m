@@ -11,9 +11,8 @@
 #import <QuartzCore/QuartzCore.h>
 
 #define USE_WHITELIST NO
-
-    //#define DISPLAY_CLASSNAME YES
-    //#define DISPLAY_OUTLINE YES
+#define DISPLAY_OUTLINE YES
+//#define DISPLAY_CLASSNAME YES
 
 @implementation UIView (swizzle)
 
@@ -27,11 +26,11 @@
                                             @"UIStatusBarWindow",
                                             @"UIStatusBarCorners",
                                             @"UIStatusBarBackgroundView",
-                                            @"UIStatusBarForgroundView",
+                                            @"UIStatusBarForegroundView",
                                             @"UIStatusBarServiceItemView",
                                             @"UIStatusBarDataNetworkItemView",
-                                            @"UIStatuBarBatteryItemView",
-                                            @"UIStatuBarTimeItemView",
+                                            @"UIStatusBarBatteryItemView",
+                                            @"UIStatusBarTimeItemView",
                                             @"UIWindow",
                                             nil];
 }
@@ -81,12 +80,13 @@
 
 - (UILabel *) getClassNameLabelForUIView:(UIView *)view{
     
-    NSString *classNameString = [[view class] description];
+    NSString *classNameString =  NSStringFromClass([view class]);
     
-    UILabel* classNameLabel = [[UILabel alloc] initWithFrame:CGRectMake(0,
-                                              0,
-                                              view.frame.size.width,
-                                              view.frame.size.height)];
+    UILabel* classNameLabel = [[UILabel alloc] initWithFrame:CGRectMake(
+                                                                        0,
+                                                                        0,
+                                                                        view.frame.size.width,
+                                                                        view.frame.size.height)];
     
     classNameLabel.text = classNameString;
     classNameLabel.alpha = .6;
@@ -101,11 +101,11 @@
     classNameLabel.adjustsFontSizeToFitWidth = YES;
     
     [classNameLabel setAutoresizingMask:UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight];
-
     
-        // red boarder around all views
-    self.layer.borderColor = [UIColor redColor].CGColor;
-    self.layer.borderWidth = 1.0f;
+    if(DISPLAY_OUTLINE){
+        self.layer.borderColor = [UIColor redColor].CGColor;
+        self.layer.borderWidth = 1.0f;
+    }
     return classNameLabel;
 }
 
