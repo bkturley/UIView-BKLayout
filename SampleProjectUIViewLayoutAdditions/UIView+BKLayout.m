@@ -11,13 +11,15 @@
 #import <QuartzCore/QuartzCore.h>
 
 #define USE_WHITELIST NO
-#define DISPLAY_CLASSNAME YES
-#define DISPLAY_OUTLINE YES
+
+    //#define DISPLAY_CLASSNAME YES
+    //#define DISPLAY_OUTLINE YES
 
 @implementation UIView (swizzle)
 
 - (NSArray *) getWhiteList{
-    return [[NSArray alloc] initWithObjects:@"UIButton", nil];
+    return [[NSArray alloc] initWithObjects:@"UIButton",
+                                            nil];
 }
 
 - (NSArray *) getBlackList{
@@ -45,55 +47,66 @@
 	[UIView jr_swizzleMethod:@selector(initWithFrame:) withMethod:@selector(initWithFrame_swizzle:) error:nil];
     
         //get a default UIView
-	id returnme = [self initWithFrame:frame];
+	UIView * returnme = [self initWithFrame:frame];
     
+    static BOOL firstRun = YES;
+    
+    NSArray * blackList = [self getBlackList];
     
     NSString *classNameString = [[returnme class] description];
-    
-    
-    //populate whitelist
-    NSArray * whiteList = [self getWhiteList];
-    NSArray * blackList = [self getBlackList];
 
-    
-    //if on whitelist{
-    
-    BOOL onWhitelist = [whiteList containsObject:classNameString];
     BOOL onBlacklist = [blackList containsObject:classNameString];
     
     if(!onBlacklist){
-        //add our label subview
-        UILabel* classNameLabel = [[UILabel alloc] initWithFrame:CGRectMake(0,
-                                                                            0,
-                                                                            frame.size.width,
-                                                                            frame.size.height)];
-
-
-        classNameLabel.text = classNameString;
-        classNameLabel.alpha = .6;
+        static NSArray * whiteList;
+        if(firstRun){
+            whiteList = [self getWhiteList];
+            firstRun = NO;
+        }
         
-        //if super.backgroundcolor isn't a shade of red
-        classNameLabel.textColor = [UIColor redColor];
-        //else
-        //classNameLabel.textColor = [UIColor whiteColor];
+        BOOL onWhitelist = [whiteList containsObject:classNameString];
+        if(USE_WHITELIST && onWhitelist){
         
-        classNameLabel.font = [UIFont fontWithName:@"Marker Felt" size:18];
-        classNameLabel.backgroundColor = [UIColor clearColor];
-        classNameLabel.adjustsFontSizeToFitWidth = YES;
-
-        [classNameLabel setAutoresizingMask:UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight];
+            [self addSubview:[self getClassNameLabelForUIView:self]];
         
-        [returnme addSubview:classNameLabel];
-        
-            // red boarder around all views
-        self.layer.borderColor = [UIColor redColor].CGColor;
-        self.layer.borderWidth = 1.0f;
-    
+        }else if(!USE_WHITELIST){
+            [self addSubview:[self getClassNameLabelForUIView:self]];
+        }
     }
         //swizzle back to overridden implementaion
-	[UIView jr_swizzleMethod:@selector(initWithFrame:) withMethod:@selector(initWithFrame_swizzle:) error:nil];
+    [UIView jr_swizzleMethod:@selector(initWithFrame:) withMethod:@selector(initWithFrame_swizzle:) error:nil];
 
 	return returnme;
+}
+
+- (UILabel *) getClassNameLabelForUIView:(UIView *)view{
+    
+    NSString *classNameString = [[view class] description];
+    
+    UILabel* classNameLabel = [[UILabel alloc] initWithFrame:CGRectMake(0,
+                                              0,
+                                              view.frame.size.width,
+                                              view.frame.size.height)];
+    
+    classNameLabel.text = classNameString;
+    classNameLabel.alpha = .6;
+    
+        //if super.backgroundcolor isn't a shade of red
+    classNameLabel.textColor = [UIColor redColor];
+        //else
+        //classNameLabel.textColor = [UIColor whiteColor];
+    
+    classNameLabel.font = [UIFont fontWithName:@"Marker Felt" size:18];
+    classNameLabel.backgroundColor = [UIColor clearColor];
+    classNameLabel.adjustsFontSizeToFitWidth = YES;
+    
+    [classNameLabel setAutoresizingMask:UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight];
+
+    
+        // red boarder around all views
+    self.layer.borderColor = [UIColor redColor].CGColor;
+    self.layer.borderWidth = 1.0f;
+    return classNameLabel;
 }
 
 @end
