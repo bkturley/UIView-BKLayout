@@ -3,16 +3,31 @@
 //  weatherApp
 //
 //  Created by BKTurley on 3/25/13.
-//  Copyright (c) 2013 BKTurley. All rights reserved.
 //
 
 #import "UIView+BKLayout.h"
 #import "JRSwizzle.h"
 #import <QuartzCore/QuartzCore.h>
 
+
+
+
+
+#pragma mark - LAYOUT CONFIGURATION
+
+    // only show layout additions for UIViews on a whitelist?
 #define USE_WHITELIST NO
+
+    // include outline of view?
 #define DISPLAY_OUTLINE YES
-//#define DISPLAY_CLASSNAME YES
+
+    // display view's classname
+#define DISPLAY_CLASSNAME YES
+#define CLASSNAME_ALPHA 1
+
+
+
+
 
 @implementation UIView (swizzle)
 
@@ -71,6 +86,12 @@
         }else if(!USE_WHITELIST){
             [self addSubview:[self getClassNameLabelForUIView:self]];
         }
+        
+        if(DISPLAY_OUTLINE){
+            self.layer.borderColor = [UIColor redColor].CGColor;
+            self.layer.borderWidth = 1.0f;
+        }
+        
     }
         //swizzle back to overridden implementaion
     [UIView jr_swizzleMethod:@selector(initWithFrame:) withMethod:@selector(initWithFrame_swizzle:) error:nil];
@@ -89,7 +110,7 @@
                                                                         view.frame.size.height)];
     
     classNameLabel.text = classNameString;
-    classNameLabel.alpha = .6;
+    classNameLabel.alpha = CLASSNAME_ALPHA;
     
         //if super.backgroundcolor isn't a shade of red
     classNameLabel.textColor = [UIColor redColor];
@@ -102,10 +123,7 @@
     
     [classNameLabel setAutoresizingMask:UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight];
     
-    if(DISPLAY_OUTLINE){
-        self.layer.borderColor = [UIColor redColor].CGColor;
-        self.layer.borderWidth = 1.0f;
-    }
+
     return classNameLabel;
 }
 
