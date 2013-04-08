@@ -10,11 +10,29 @@
 #import "JRSwizzle.h"
 #import <QuartzCore/QuartzCore.h>
 
-@interface UIView()
-    //@property (nonatomic) NSArray * whiteList; //class names that should be displayed
-@end
+#define USE_WHITELIST NO
+#define DISPLAY_CLASSNAME YES
+#define DISPLAY_OUTLINE YES
 
 @implementation UIView (swizzle)
+
+- (NSArray *) getWhiteList{
+    return [[NSArray alloc] initWithObjects:@"UIButton", nil];
+}
+
+- (NSArray *) getBlackList{
+    return [[NSArray alloc] initWithObjects:@"UIStatusBar",
+                                            @"UIStatusBarWindow",
+                                            @"UIStatusBarCorners",
+                                            @"UIStatusBarBackgroundView",
+                                            @"UIStatusBarForgroundView",
+                                            @"UIStatusBarServiceItemView",
+                                            @"UIStatusBarDataNetworkItemView",
+                                            @"UIStatuBarBatteryItemView",
+                                            @"UIStatuBarTimeItemView",
+                                            @"UIWindow",
+                                            nil];
+}
 
 + (void) swizzle
 {
@@ -29,19 +47,21 @@
         //get a default UIView
 	id returnme = [self initWithFrame:frame];
     
-
-    //populate whitelist
-    NSArray * whiteList = [[NSArray alloc] initWithObjects:
-                                                      @"UIButton",
-                                                      nil];
     
     NSString *classNameString = [[returnme class] description];
+    
+    
+    //populate whitelist
+    NSArray * whiteList = [self getWhiteList];
+    NSArray * blackList = [self getBlackList];
+
     
     //if on whitelist{
     
     BOOL onWhitelist = [whiteList containsObject:classNameString];
+    BOOL onBlacklist = [blackList containsObject:classNameString];
     
-    if(onWhitelist){
+    if(!onBlacklist){
         //add our label subview
         UILabel* classNameLabel = [[UILabel alloc] initWithFrame:CGRectMake(0,
                                                                             0,
