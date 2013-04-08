@@ -10,4 +10,5 @@
 
 @interface UIView (swizzle)
 + (void) swizzle;
+
 @end
