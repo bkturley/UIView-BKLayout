@@ -16,27 +16,28 @@
 #pragma mark - LAYOUT CONFIGURATION
 
     // only show layout additions for UIViews on a whitelist?
-#define USE_WHITELIST NO
+#define USE_WHITELIST YES
+
+#define USE_BLACKLIST YES
 
     // include outline of view?
 #define DISPLAY_OUTLINE YES
 
-    // display view's classname
+    // display view's classname?
 #define DISPLAY_CLASSNAME YES
 #define CLASSNAME_ALPHA 1
 
 
 
 
-
 @implementation UIView (swizzle)
 
-- (NSArray *) getWhiteList{
+- (NSArray *) createWhiteList{
     return [[NSArray alloc] initWithObjects:@"UIButton",
                                             nil];
 }
 
-- (NSArray *) getBlackList{
+- (NSArray *) createBlackList{
     return [[NSArray alloc] initWithObjects:@"UIStatusBar",
                                             @"UIStatusBarWindow",
                                             @"UIStatusBarCorners",
@@ -63,40 +64,52 @@
         //get a default UIView
 	UIView * returnme = [self initWithFrame:frame];
     
-    static BOOL firstRun = YES;
+    [self drawAnnotationsIfNeeded:returnme];
     
-    NSArray * blackList = [self getBlackList];
-    
-    NSString *classNameString = [[returnme class] description];
-
-    BOOL onBlacklist = [blackList containsObject:classNameString];
-    
-    if(!onBlacklist){
-        static NSArray * whiteList;
-        if(firstRun){
-            whiteList = [self getWhiteList];
-            firstRun = NO;
-        }
-        
-        BOOL onWhitelist = [whiteList containsObject:classNameString];
-        if(USE_WHITELIST && onWhitelist){
-        
-            [self addSubview:[self getClassNameLabelForUIView:self]];
-        
-        }else if(!USE_WHITELIST){
-            [self addSubview:[self getClassNameLabelForUIView:self]];
-        }
-        
-        if(DISPLAY_OUTLINE){
-            self.layer.borderColor = [UIColor redColor].CGColor;
-            self.layer.borderWidth = 1.0f;
-        }
-        
-    }
         //swizzle back to overridden implementaion
     [UIView jr_swizzleMethod:@selector(initWithFrame:) withMethod:@selector(initWithFrame_swizzle:) error:nil];
 
 	return returnme;
+}
+
+
+- (void)drawAnnotationsIfNeeded:(UIView*)annotateMe{
+    
+    static NSArray * blackList;
+    static NSArray * whiteList;
+    static BOOL firstRun = YES;
+    
+    if(firstRun){
+        if(USE_BLACKLIST)
+            blackList = [self createBlackList];
+        if(USE_WHITELIST)
+            whiteList = [self createWhiteList];
+        firstRun = NO;
+    }
+    
+    NSString *classNameString = [[annotateMe class] description];
+    BOOL onBlacklist = [blackList containsObject:classNameString];
+    
+    if(!onBlacklist){
+        
+        BOOL onWhitelist = [whiteList containsObject:classNameString];
+        
+        if(USE_WHITELIST && onWhitelist){
+            [self addSubview:[self getClassNameLabelForUIView:self]];
+            [self drawOutlineIfNeeded];
+            
+        }else if(!USE_WHITELIST){
+            [self addSubview:[self getClassNameLabelForUIView:self]];
+            [self drawOutlineIfNeeded];
+        }
+    }
+}
+
+- (void) drawOutlineIfNeeded{
+    if(DISPLAY_OUTLINE){
+        self.layer.borderColor = [UIColor redColor].CGColor;
+        self.layer.borderWidth = 1.0f;
+    }
 }
 
 - (UILabel *) getClassNameLabelForUIView:(UIView *)view{
