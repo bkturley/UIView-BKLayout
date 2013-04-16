@@ -18,16 +18,12 @@
     // only show layout additions for UIViews on a whitelist?
 #define USE_WHITELIST YES
 
-#define USE_BLACKLIST YES
-
-    // include outline of view?
+    // include outline annotation?
 #define DISPLAY_OUTLINE YES
 
-    // display view's classname?
+    // display classname annotation?
 #define DISPLAY_CLASSNAME YES
 #define CLASSNAME_ALPHA 1
-
-
 
 
 @implementation UIView (swizzle)
@@ -51,13 +47,11 @@
                                             nil];
 }
 
-+ (void) swizzle
-{
++ (void) swizzle{
     [UIView jr_swizzleMethod:@selector(initWithFrame:) withMethod:@selector(initWithFrame_swizzle:) error:nil];
 }
 
-- (id) initWithFrame_swizzle:(CGRect) frame
-{
+- (id) initWithFrame_swizzle:(CGRect) frame{
         //swizzle to origional implementation
 	[UIView jr_swizzleMethod:@selector(initWithFrame:) withMethod:@selector(initWithFrame_swizzle:) error:nil];
     
@@ -72,12 +66,11 @@
 	return returnme;
 }
 
-
 - (void)drawAnnotationsIfNeeded:(UIView*)annotateMe{
     
     static NSArray * blackList;
     static NSArray * whiteList;
-    static BOOL firstRun = YES;
+    static BOOL firstRun = YES;ø
     
     if(firstRun){
         if(USE_BLACKLIST)
