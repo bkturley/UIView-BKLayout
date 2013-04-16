@@ -49,7 +49,7 @@
 }
 
 - (id) initWithFrame_swizzle:(CGRect) frame{
-        //swizzle to origional implementation
+        //swizzle to original implementation
 	[UIView jr_swizzleMethod:@selector(initWithFrame:) withMethod:@selector(initWithFrame_swizzle:) error:nil];
     
         //get a default UIView
