@@ -9,19 +9,16 @@
 #import "JRSwizzle.h"
 #import <QuartzCore/QuartzCore.h>
 
-
-
-
-
 #pragma mark - LAYOUT CONFIGURATION
 
     // only show layout additions for UIViews on a whitelist?
 #define USE_WHITELIST YES
-
+#define USE_BLACKLIST YES
     // include outline annotation?
 #define DISPLAY_OUTLINE YES
 
     // display classname annotation?
+
 #define DISPLAY_CLASSNAME YES
 #define CLASSNAME_ALPHA 1
 
@@ -70,16 +67,9 @@
     
     static NSArray * blackList;
     static NSArray * whiteList;
-    static BOOL firstRun = YES;ø
-    
-    if(firstRun){
-        if(USE_BLACKLIST)
-            blackList = [self createBlackList];
-        if(USE_WHITELIST)
-            whiteList = [self createWhiteList];
-        firstRun = NO;
-    }
-    
+
+    [self createAccessListsWithWhiteList:whiteList andBlacklist:blackList];
+
     NSString *classNameString = [[annotateMe class] description];
     BOOL onBlacklist = [blackList containsObject:classNameString];
     
@@ -88,13 +78,24 @@
         BOOL onWhitelist = [whiteList containsObject:classNameString];
         
         if(USE_WHITELIST && onWhitelist){
-            [self addSubview:[self getClassNameLabelForUIView:self]];
+            [self addSubview:[self createClassNameLabelForUIView:self]];
             [self drawOutlineIfNeeded];
             
         }else if(!USE_WHITELIST){
-            [self addSubview:[self getClassNameLabelForUIView:self]];
+            [self addSubview:[self createClassNameLabelForUIView:self]];
             [self drawOutlineIfNeeded];
         }
+    }
+}
+
+- (void) createAccessListsWithWhiteList:(NSArray *)whitelist andBlacklist:(NSArray *)blacklist{
+    static BOOL firstRun = YES;
+    if(firstRun){
+        if(USE_BLACKLIST)
+            blacklist = [self createBlackList];
+        if(USE_WHITELIST)
+            whitelist = [self createWhiteList];
+        firstRun = NO;
     }
 }
 
@@ -105,7 +106,7 @@
     }
 }
 
-- (UILabel *) getClassNameLabelForUIView:(UIView *)view{
+- (UILabel *)createClassNameLabelForUIView:(UIView *)view{
     
     NSString *classNameString =  NSStringFromClass([view class]);
     
